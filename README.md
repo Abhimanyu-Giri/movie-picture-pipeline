@@ -410,3 +410,40 @@ kustomize build | kubectl apply -f -
 ## License
 
 [License](LICENSE.md)
+
+
+
+## My note
+
+# Movie Picture Pipeline
+
+## Student Note
+
+### GitHub Repository
+
+https://github.com/Abhimanyu-Giri/movie-picture-pipeline
+
+### GitHub Actions
+
+- Frontend Continuous Integration: [Successful Run]
+- Frontend Continuous Deployment: [Successful Run]
+- Backend Continuous Integration: [Successful Run]
+- Backend Continuous Deployment: [Successful Run]
+
+### Application URLs
+
+Frontend:
+YOUR_FRONTEND_URL
+
+Backend:
+YOUR_BACKEND_URL/movies
+
+### Project Evidence
+
+#### Frontend
+
+Movie List successfully deployed and accessible.
+
+#### Backend
+
+The `/movies` endpoint successfully returns movie data.
