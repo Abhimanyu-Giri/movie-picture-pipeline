@@ -19,3 +19,17 @@ spec:
           image: backend
           ports:
             - containerPort: 5000
+          readinessProbe:
+            httpGet:
+              path: /movies
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /movies
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3

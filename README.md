@@ -1,5 +1,19 @@
 # Movie Picture Pipeline
 
+Repository: https://github.com/Abhimanyu-Giri/movie-picture-pipeline
+
+## CD repair and resubmission
+
+Start with [START_HERE.md](START_HERE.md). Both CD workflows now gate deployment on lint and tests, publish Git-SHA-tagged ECR images, apply Kustomize manifests, and verify public AWS endpoints. Frontend CD discovers the backend LoadBalancer URL **before** building the React image.
+
+The supplied source was repaired and checked locally. See the runtime status below for deployment progress, and see [VALIDATION.md](VALIDATION.md) for checks actually performed and [PROOF/README.md](PROOF/README.md) for required evidence.
+
+<!-- AWS_RUNTIME_START -->
+Runtime status: pending AWS access and deployment. Actual frontend/backend URLs have not yet been verified. After deployment, run `bash scripts/collect-runtime-evidence.sh all` to replace this paragraph with real measured URLs.
+<!-- AWS_RUNTIME_END -->
+
+## Original project instructions
+
 You've been brought on as the DevOps resource for a development team that manages a web application that is a catalog of Movie Picture movies. They're in dire need of automating their development workflows in hopes of accelerating their release cycle. They'd like to use Github Actions to automate testing, building and deploying their applications to an existing Kubernetes cluster.
 
 The team's project is comprised of 2 application.
@@ -7,7 +21,7 @@ The team's project is comprised of 2 application.
 1. A frontend UI built written in Typescript, using the React framework
 2. A backend API written in Python using the Flask framework.
 
-In the `starter` folder, you'll find 2 folders, one named `frontend` and one named `backend`, where each application's source code is maintained. Your job is to use the team's [existing documentation](./starter/frontend/frontend-development-notes) and create CI/CD pipelines to meet the teams' needs.
+In the `starter` folder, you'll find 2 folders, one named `frontend` and one named `backend`, where each application's source code is maintained. Your job is to use the team's [existing documentation](./starter/frontend/frontend-development-notes.md) and create CI/CD pipelines to meet the teams' needs.
 
 ## Deliverables
 
@@ -33,14 +47,14 @@ In the `starter` folder, you'll find 2 folders, one named `frontend` and one nam
 ### Backend
 
 1. A Continuous Integration workflow that:
-   1. Runs on `pull_requests` against the `main` branch,only when code in the frontend application changes.
+   1. Runs on `pull_requests` against the `main` branch,only when code in the backend application changes.
    2. Is able to be run on-demand (i.e. manually without needing to push code)
    3. Runs the following jobs in parallel:
-      1. Runs a linting job that fails if the code doesn't adhere to eslint rules
+      1. Runs a linting job that fails if the code doesn't adhere to flake8 rules
       2. Runs a test job that fails if the test suite doesn't pass
    4. Runs a build job only if the lint and test jobs pass and successfully builds the application
 2. A Continuous Deployment workflow that:
-   1. Runs on `push` against the `main` branch, only when code in the frontend application changes.
+   1. Runs on `push` against the `main` branch, only when code in the backend application changes.
    2. Is able to be run on-demand (i.e. manually without needing to push code)
    3. Runs the same lint/test jobs as the Continuous Integration workflow
    4. Runs a build job only when the lint and test jobs pass
@@ -410,40 +424,3 @@ kustomize build | kubectl apply -f -
 ## License
 
 [License](LICENSE.md)
-
-
-
-## My note
-
-# Movie Picture Pipeline
-
-## Student Note
-
-### GitHub Repository
-
-https://github.com/Abhimanyu-Giri/movie-picture-pipeline
-
-### GitHub Actions
-
-- Frontend Continuous Integration: [Successful Run]
-- Frontend Continuous Deployment: [Successful Run]
-- Backend Continuous Integration: [Successful Run]
-- Backend Continuous Deployment: [Successful Run]
-
-### Application URLs
-
-Frontend:
-YOUR_FRONTEND_URL
-
-Backend:
-YOUR_BACKEND_URL/movies
-
-### Project Evidence
-
-#### Frontend
-
-Movie List successfully deployed and accessible.
-
-#### Backend
-
-The `/movies` endpoint successfully returns movie data.

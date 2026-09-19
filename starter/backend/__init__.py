@@ -2,7 +2,11 @@ import os
 from flask import Flask
 from flask_cors import CORS
 
-from movies import movies_api
+# pytest imports this directory as a package; uWSGI imports __init__ directly.
+if __package__:
+    from .movies import movies_api
+else:
+    from movies import movies_api
 
 app = Flask(__name__)
 CORS(app)

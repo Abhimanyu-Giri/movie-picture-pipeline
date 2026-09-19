@@ -14,8 +14,8 @@ RUN npm ci
 # Copy code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Build-time configuration is embedded in the browser JavaScript.
+RUN test -n "$REACT_APP_MOVIE_API_URL" && npm run build
 
 # Expose the port used by the React app
 EXPOSE 3000

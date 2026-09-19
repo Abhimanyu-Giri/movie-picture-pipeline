@@ -32,7 +32,7 @@ jobs:
         run: pip install pipenv
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv sync --dev
 
       - name: Run lint
         run: pipenv run lint
@@ -45,9 +45,6 @@ jobs:
     defaults:
       run:
         working-directory: starter/backend
-
-    env:
-      PYTHONPATH: ${{ github.workspace }}/starter/backend
 
     steps:
       - name: Checkout code
@@ -62,7 +59,7 @@ jobs:
         run: pip install pipenv
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv sync --dev
 
       - name: Run tests
         run: pipenv run test
