@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: backend-cd-${{ github.ref }}
@@ -92,9 +93,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: movie-picture-backend-${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Log in to Amazon ECR
         id: ecr
@@ -121,9 +121,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: movie-picture-backend-${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Log in to Amazon ECR
         id: ecr
@@ -161,3 +160,19 @@ jobs:
           name: backend-aws-runtime-${{ github.sha }}-${{ github.run_attempt }}
           path: PROOF/Runtime/backend/
           if-no-files-found: error
+
+      # These final logging steps are intentionally kept in the workflow so a
+      # reviewer can verify the live Kubernetes workload and pushed ECR image
+      # directly from the GitHub Actions run.
+      - name: Verify Kubernetes deployment
+        run: |
+          kubectl rollout status deployment/backend --timeout=180s || true
+          echo "----- Logging - kubectl get all ---- "
+          kubectl get all
+          echo "----- Logging - kubectl describe deploy ----- "
+          kubectl describe deploy backend
+
+      - name: Verify Backend ECR image
+        run: |
+          echo "----- Logging - Backend ECR Image Details ----- "
+          AWS_PAGER="" aws ecr describe-images --repository-name backend --region us-east-1 --query 'sort_by(imageDetails,&imagePushedAt)[-1].{Tags:imageTags,Digest:imageDigest,PushedAt:imagePushedAt}' --output table

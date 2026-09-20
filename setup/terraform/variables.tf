@@ -1,19 +1,58 @@
-variable "k8s_version" {
-  default = "1.31"
+variable "aws_region" {
+  type    = string
+  default = "us-east-1"
 }
 
-variable "enable_private" {
-  default = false
+variable "project_name" {
+  type    = string
+  default = "movie-picture-pipeline"
 }
 
-variable "public_az" {
+variable "cluster_name" {
+  type    = string
+  default = "movie-picture-pipeline"
+}
+
+variable "kubernetes_version" {
   type        = string
-  description = "Change this to a letter a-f only if you encounter an error during setup"
-  default     = "a"
+  description = "Use a version in EKS standard support to avoid extended-support charges."
+  default     = "1.35"
 }
 
-variable "private_az" {
+variable "node_instance_type" {
   type        = string
-  description = "Change this to a letter a-f only if you encounter an error during setup"
-  default     = "b"
+  description = "One small node is sufficient for this short-lived proof deployment."
+  default     = "t3.small"
+}
+
+variable "frontend_ecr_repo" {
+  type    = string
+  default = "frontend"
+}
+
+variable "backend_ecr_repo" {
+  type    = string
+  default = "backend"
+}
+
+variable "github_owner" {
+  type    = string
+  default = "Abhimanyu-Giri"
+}
+
+variable "github_repo" {
+  type    = string
+  default = "movie-picture-pipeline"
+}
+
+variable "billing_email" {
+  type        = string
+  description = "Email for AWS Budget alerts. Empty disables budget creation."
+  default     = ""
+}
+
+variable "monthly_budget_usd" {
+  type        = number
+  description = "Account-level alert threshold. A budget warns; it does not stop resources."
+  default     = 10
 }

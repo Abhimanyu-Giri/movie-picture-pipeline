@@ -1,13 +1,20 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 terraform {
-  required_version = "1.3.9"
+  required_version = ">= 1.5.0, < 2.0.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.55.0"
+      version = "~> 5.0"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+  default_tags {
+    tags = { Project = var.project_name }
   }
 }
